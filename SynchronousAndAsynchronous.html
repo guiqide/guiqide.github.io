@@ -7,7 +7,7 @@
 <body>
     <script type="application/javascript">
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/images/bug.jpg');
+        xhr.open('GET', '/images/bug.jpg', true);
         xhr.onload = function(e) {
             if (xhr.readyState === 4) {
                 if (xhr.readyState === 200) {
