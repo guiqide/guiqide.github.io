@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CORS</title>
+</head>
+<body>
+    <script type="application/javascript">
+        var invocation = new XMLHttpRequest();
+        var url = 'http://bar.other/resources/post-here/';
+        var body = '{C}{C}{C}{C}{C}{C}{C}{C}{C}{C}Arun';
+            
+        function callOtherDomain(){
+          if(invocation)
+            {
+              invocation.open('POST', url, true);
+              invocation.setRequestHeader('X-PINGOTHER', 'pingpong');
+              invocation.setRequestHeader('Content-Type', 'application/xml');
+              invocation.onreadystatechange = handler;
+              invocation.send(body); 
+            }
+        }
+        callOtherDomain();
+    </script>
+</body>
+</html>
