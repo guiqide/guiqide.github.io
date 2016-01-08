@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Synchronous</title>
+</head>
+<body>
+    <script type="application/javascript">
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/images/bug.jpg');
+        xhr.onload = function(e) {
+            if (xhr.readyState === 4) {
+                if (xhr.readyState === 200) {
+                    consle.log(xhr.responseText);
+                } else {
+                    console.log(xhr.statusText);
+                }
+            }
+        }
+        xhr.onerror = function(e) {
+            console.error(xhr.statusText);
+        }
+        xhr.send(null);
+    </script>
+</body>
+</html>
