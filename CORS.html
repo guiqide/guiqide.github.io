@@ -6,21 +6,14 @@
 </head>
 <body>
     <script type="application/javascript">
-        var invocation = new XMLHttpRequest();
-        var url = 'http://bar.other/resources/post-here/';
-        var body = '{C}{C}{C}{C}{C}{C}{C}{C}{C}{C}Arun';
-            
-        function callOtherDomain(){
-          if(invocation)
-            {
-              invocation.open('POST', url, true);
-              invocation.setRequestHeader('X-PINGOTHER', 'pingpong');
-              invocation.setRequestHeader('Content-Type', 'application/xml');
-              invocation.onreadystatechange = handler;
-              invocation.send(body); 
-            }
+        function reqListener() {
+            console.log(this.responseText);
         }
-        callOtherDomain();
+        var oReq = new XMLHTTPRequest();
+        oReq.addEventListener('load', reqListener);
+        oReq.open('GET', 'http://guiqide.win/230.jpg');
+        oReq.send();
+        
     </script>
 </body>
 </html>
