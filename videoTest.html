@@ -10,4 +10,15 @@
         <source type="video/mp4" src="./video/horse.mp4" webkit-playsinline=true>
     </video>
 </body>
+<script type="application/javascript">
+    var v = document.getElementsByTagName("video")[0];
+    v.addEventListener("ended", function() {
+        foo();
+    }, true);
+    // v.currentTime = 10.0;
+
+    function foo() {
+        alert('video ended!');
+    }
+</script>
 </html>
