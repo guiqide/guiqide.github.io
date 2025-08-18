@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Gabriel B">
+
+
+    <meta name="subtitle" content="记录10年web端开发历程，以及生活的点滴">
+
+
+    <meta name="description" content="擅长前端大型项目的架构设计，以及如何长期维护一个稳定可持续的系统">
+
+
+    <meta name="keywords" content="frontend, backend, ai, live">
+
+
+
+
+<title>如何搭建本地的AgentGPT，并突破task最大限制 | Gabriel website</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/menu.js"></script>
+    
+
+
+
+
+
+
+
+
+
+
+  <meta name="generator" content="Hexo 7.3.0"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            Frame.
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Home</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Archive</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/gallery/">Gallery</a>
+              </li> 
+                   
+          
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<script src="/js/menu.js"></script>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+        </div>
+        <div class="post-title">
+            
+            
+                如何搭建本地的AgentGPT，并突破task最大限制
+            
+            
+        </div>
+        <span class="post-date">
+            4月 14, 2023
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <div class="h-line-primary"></div>
+              
+    </div>
+</div>
+    <div class="post-content">
+    <p>如果希望了解AgentGPT是什么？可以看其他同学的文章</p>
+<h2 id="体验AgentGPT"><a href="#体验AgentGPT" class="headerlink" title="体验AgentGPT"></a>体验AgentGPT</h2><p>我们在体验<a target="_blank" rel="noopener" href="https://agentgpt.reworkd.ai/">AgentGPT官网</a>时会遇到一些限制：比如要求提供自己的APIKEY，或者在显示答案时几次结果后出现：</p>
+<ol>
+<li><p>This agent has been running for too long (25 Loops). To save your wallet, and our infrastructure costs, this agent is shutting down. In the future, the number of iterations will be configurable.</p>
+</li>
+<li><p>“We’re sorry, because this is a demo, we cannot have our agents running for too long. Note, if you desire longer runs, please provide your own API key in Settings. Shutting down.”</p>
+</li>
+</ol>
+<p>这是因为AgentGPT限制了消息数量，如果用户提供了APIKEY：那么显示到第25个task则会出现第一条消息，并结束任务；如果没输入APIKEY：则会在第4个task时出现第二条。当我们希望自己突破限制，这时就只能自己搭建一个AgentGPT服务，并修改代码来解决。下面介绍一下如何部署已经修改代码绕过限制。</p>
+<h2 id="Fork代码"><a href="#Fork代码" class="headerlink" title="Fork代码"></a>Fork代码</h2><p>访问AgentGPT的开源代码： <a target="_blank" rel="noopener" href="https://github.com/reworkd/AgentGPT%EF%BC%8C%E7%84%B6%E5%90%8E%E7%82%B9%E5%87%BB%E5%8F%B3%E4%B8%8A%E8%A7%92%E7%9A%84fork%EF%BC%8C%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E4%BB%93%E5%BA%93%E4%B8%AD%E5%88%9B%E5%BB%BA%E4%B8%80%E4%BB%BD%E6%8B%B7%E8%B4%9D%E3%80%82">https://github.com/reworkd/AgentGPT，然后点击右上角的fork，在自己的仓库中创建一份拷贝。</a></p>
+<h2 id="修改AgentGPT代码"><a href="#修改AgentGPT代码" class="headerlink" title="修改AgentGPT代码"></a>修改AgentGPT代码</h2><p>现在将自己的代码clone下来，并进行一些调整：</p>
+<h3 id="官网要求用户填写自己OPENAI-APIKEY"><a href="#官网要求用户填写自己OPENAI-APIKEY" class="headerlink" title="官网要求用户填写自己OPENAI-APIKEY"></a>官网要求用户填写自己OPENAI-APIKEY</h3><p><code>// index.tsx </code>const [customApiKey, setCustomApiKey] &#x3D; React.useState<string>(“”);<code>&lt;SettingsDialog   customApiKey=&#123;customApiKey&#125;   setCustomApiKey=&#123;setCustomApiKey&#125;   show=&#123;showSettingsDialog&#125;   close=&#123;() =&gt; setShowSettingsDialog(false)&#125; /&gt;</code></p>
+<p>以上代码会让用户每次访问网站都输入ApiKey，官方并不会保存用户的key，只要关掉页面后就没了。我们希望自己的服务每次打开可以直接使用，而不需进行APIKEY</p>
+<p>解决办法：不再渲染SettingDialog，注释掉SettingDialog代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// index.tsx</span><br><span class="line">&#123;/*&lt;SettingsDialog*/&#125;</span><br><span class="line">&#123;/*  customApiKey=&#123;customApiKey&#125;*/&#125;</span><br><span class="line">&#123;/*  setCustomApiKey=&#123;setCustomApiKey&#125;*/&#125;</span><br><span class="line">&#123;/*  show=&#123;showSettingsDialog&#125;*/&#125;</span><br><span class="line">&#123;/*  close=&#123;() =&gt; setShowSettingsDialog(false)&#125;*/&#125;</span><br><span class="line">&#123;/*/&gt;*/&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="强制使用我们的OpenAI-APIKey"><a href="#强制使用我们的OpenAI-APIKey" class="headerlink" title="强制使用我们的OpenAI-APIKey"></a>强制使用我们的OpenAI-APIKey</h3><p><code>// .env OPENAI_API_KEY=changeme （这里替换成我们的key)</code></p>
+<p>但以上的配置只是官方在用户没有输入APIKEY时使用的内部key，我们需要修改下代码让服务直接使用这个</p>
+<p><code>utils/chain.ts</code>文件是发起openai接口的文件，这里有如下代码</p>
+<p><code>new OpenAI(&#123;   openAIApiKey:     customApiKey === &quot;&quot; ? process.env.OPENAI_API_KEY : customApiKey,   temperature: 0.9,   modelName: &quot;gpt-3.5-turbo&quot;,   maxTokens: 300, &#125;);</code></p>
+<p>我们改成openAIApiKey: process.env.OPENAI_API_KEY</p>
+<h3 id="突破task限制"><a href="#突破task限制" class="headerlink" title="突破task限制"></a>突破task限制</h3><p>如开头说到，官网会对task的数量进行限制，我们希望自己来控制这个限制：</p>
+<p><code>// src/components/AutonomousAgent.tsthis.numLoops += 1; const maxLoops = this.customApiKey === &quot;&quot; ? 4 : 25; if (this.numLoops &gt; maxLoops) &#123;   this.sendLoopMessage();   this.shutdown();   return; &#125;</code></p>
+<p>解决办法：修改这里的const maxLoopsd &#x3D; ？比如100（建议设一个值，否则会一直执行下去）</p>
+<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><p>需要部署的服务器已经安装了docker，然后将代码clone到服务器中</p>
+<p>修改setup.sh的权限为可执行: chmod u+x setup.sh</p>
+<p>执行shell .&#x2F;setup.sh –docker</p>
+<p>shell中输入自己的APIKEY（会在docker容器中创建.env）</p>
+<p>容器被创建并运行:</p>
+<h2 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h2><p><img src="https://images-service-1251417320.cos.ap-guangzhou.myqcloud.com/images/https3A2F2Fs3-us-west-2.png"></p>
+
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2023/05/17/%E5%A4%A7%E5%9E%8Bvue3%E5%8D%95%E9%A1%B5%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/">Prev</a>
+                </div>
+            
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2021/03/23/nestjs%E7%9A%84%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    
+    
+
+  </body>
+</html>

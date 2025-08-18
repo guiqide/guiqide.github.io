@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Gabriel B">
+
+
+    <meta name="subtitle" content="记录10年web端开发历程，以及生活的点滴">
+
+
+    <meta name="description" content="擅长前端大型项目的架构设计，以及如何长期维护一个稳定可持续的系统">
+
+
+    <meta name="keywords" content="frontend, backend, ai, live">
+
+
+
+
+<title>nestjs的项目代码组织结构 | Gabriel website</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/menu.js"></script>
+    
+
+
+
+
+
+
+
+
+
+
+  <meta name="generator" content="Hexo 7.3.0"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            Frame.
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Home</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Archive</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/gallery/">Gallery</a>
+              </li> 
+                   
+          
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<script src="/js/menu.js"></script>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+        </div>
+        <div class="post-title">
+            
+            
+                nestjs的项目代码组织结构
+            
+            
+        </div>
+        <span class="post-date">
+            3月 23, 2021
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <div class="h-line-primary"></div>
+              
+    </div>
+</div>
+    <div class="post-content">
+    <p>通过nest命令，可以很容易开始一个nest项目，可以查看文档：()[<a target="_blank" rel="noopener" href="https://docs.nestjs.com/#installation],%E8%BF%99%E9%87%8C%E9%BB%98%E8%AE%A4%E5%A4%A7%E5%AE%B6%E5%B7%B2%E7%BB%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%A5%BD%E4%BA%86%E9%A1%B9%E7%9B%AE%EF%BC%8C">https://docs.nestjs.com/#installation],这里默认大家已经初始化好了项目，</a><br>我们讲一下项目目录划分的最佳实践:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">empty-nestjs-project</span><br><span class="line">├─.eslintrc.js</span><br><span class="line">├─.gitignore</span><br><span class="line">├─.prettierrc</span><br><span class="line">├─README.md</span><br><span class="line">├─nest-cli.json</span><br><span class="line">├─package-lock.json</span><br><span class="line">├─package.json</span><br><span class="line">├─tsconfig.build.json</span><br><span class="line">├─tsconfig.json</span><br><span class="line">├─test</span><br><span class="line">|  ├─app.e2e-spec.ts</span><br><span class="line">|  └jest-e2e.json</span><br><span class="line">├─src</span><br><span class="line">|  ├─app.controller.spec.ts</span><br><span class="line">|  ├─app.controller.ts</span><br><span class="line">|  ├─app.module.ts</span><br><span class="line">|  ├─app.service.ts</span><br><span class="line">|  └main.ts</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>刚生成的空项目中只有一个main入口文件和app，但真实项目肯定会创建多个类似的，所以需要一个友好的目录结构。<br>nest提供了多种不同职责的装饰器或者服务，有些需要和控制器放在一个目录，有些则需要放在公共的目录中，下面列出所有不同的职责文件类型，帮助大家理解：</p>
+<ul>
+<li>module</li>
+<li>controller</li>
+<li>service</li>
+<li>factory</li>
+<li>entity</li>
+<li>guard</li>
+<li>interceptor</li>
+<li>interface</li>
+<li>middleware</li>
+<li>pipes</li>
+<li>serializer</li>
+<li>job</li>
+</ul>
+<h2 id="我们的目录原则："><a href="#我们的目录原则：" class="headerlink" title="我们的目录原则："></a>我们的目录原则：</h2><h3 id="模型的目录"><a href="#模型的目录" class="headerlink" title="模型的目录"></a>模型的目录</h3><p>单个模型下的文件会放在同一个目录中，比如模型的控制器，model配置文件(entity)，模型的服务函数，模型的数据生成器（factory）<br>类似如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">├─src</span><br><span class="line">|  ├─app.controller.spec.ts</span><br><span class="line">|  ├─app.controller.ts</span><br><span class="line">|  ├─app.module.ts</span><br><span class="line">|  ├─app.service.ts</span><br><span class="line">|  ├─config.ts</span><br><span class="line">|  ├─main.ts</span><br><span class="line">|  ├─models</span><br><span class="line">|  |   ├─user</span><br><span class="line">|  |   |  ├─user.controller.ts</span><br><span class="line">|  |   |  ├─user.entity.ts</span><br><span class="line">|  |   |  ├─user.factory.ts</span><br><span class="line">|  |   |  ├─user.module.ts</span><br><span class="line">|  |   |  ├─user.service.ts</span><br><span class="line">|  |   |  ├─interfaces</span><br><span class="line">|  |   |  |     └user.interface.ts</span><br><span class="line">|  |   |  ├─dto</span><br><span class="line">|  |   |  |  ├─create-user.dto.ts</span><br><span class="line">|  |   |  |  ├─index.ts</span><br><span class="line">|  |   |  |  └login-user.dto.ts</span><br><span class="line">|  |   ├─store</span><br><span class="line">|  |   |   ├─store.controller.ts</span><br><span class="line">|  |   |   ├─store.entity.ts</span><br><span class="line">|  |   |   ├─store.factory.ts</span><br><span class="line">|  |   |   ├─store.module.ts</span><br><span class="line">|  |   |   ├─store.service.ts</span><br><span class="line">|  |   |   ├─dto</span><br><span class="line">|  |   |   |  ├─index.ts</span><br><span class="line">|  |   |   |  └insert-order-with-store.ts</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里module文件负责模型的注入，因为nest是通过iOC的方式来进行调用。</p>
+<p>controller控制器负责配置restful api的接口，以及入口函数。</p>
+<p>DTO负责接口接受的数据的结构定义，以及参数校验工作</p>
+<p>数据库表的访问通过service，当store需要调用user时可以通过StoreModule的import来导入UserModule。（user.module需要export: [UserService]）</p>
+<h3 id="公共的class和文件"><a href="#公共的class和文件" class="headerlink" title="公共的class和文件"></a>公共的class和文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">├─src</span><br><span class="line">|  ├─common</span><br><span class="line">|  |   ├─serializers</span><br><span class="line">|  |   |      ├─model.serializer.ts</span><br><span class="line">|  |   |      ├─responses</span><br><span class="line">|  |   |      |     ├─error.serializer.ts</span><br><span class="line">|  |   |      |     └success.serializer.ts</span><br><span class="line">|  |   ├─pipes</span><br><span class="line">|  |   |   └validation.pipe.ts</span><br><span class="line">|  |   ├─middleware</span><br><span class="line">|  |   |     ├─logger.middleware.ts</span><br><span class="line">|  |   |     └user.middleware.ts</span><br><span class="line">|  |   ├─interfaces</span><br><span class="line">|  |   ├─interceptors</span><br><span class="line">|  |   |      ├─response.interceptor.ts</span><br><span class="line">|  |   |      └sentry.interceptor.ts</span><br><span class="line">|  |   ├─helpers</span><br><span class="line">|  |   ├─guards</span><br><span class="line">|  |   |   └test.guard.ts</span><br><span class="line">|  |   ├─exceptions</span><br><span class="line">|  |   ├─entities</span><br><span class="line">|  |   |    └base.ts</span><br><span class="line">|  |   ├─decorators</span><br><span class="line">|  |   ├─constants</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>common有着最多的文件，主要负责一些公共的服务，并可以用在任何的模型中<br>比如</p>
+<ul>
+<li>response.interceptor.ts，负责包装返回的json结构</li>
+<li>validation.pipe.ts，负责实现class-validator的transform函数，校验请求的query参数</li>
+<li>logger.middleware.ts，负责对请求的时间做统计</li>
+</ul>
+<h3 id="其他的一些src下目录"><a href="#其他的一些src下目录" class="headerlink" title="其他的一些src下目录"></a>其他的一些src下目录</h3><ul>
+<li>数据库表的数据生成则是放在了database目录下</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">├─src</span><br><span class="line">|  ├─database</span><br><span class="line">|  |    ├─seeders</span><br><span class="line">|  |    |    ├─address.seed.ts</span><br><span class="line">|  |    |    ├─category.seed.ts</span><br><span class="line">|  |    |    ├─sale-attr-key.seed.ts</span><br><span class="line">|  |    |    ├─slate-attr-value.seed.ts</span><br><span class="line">|  |    |    ├─spu.seed.ts</span><br><span class="line">|  |    |    ├─staff.seed.ts</span><br><span class="line">|  |    |    ├─store.seed.ts</span><br><span class="line">|  |    |    └user.seed.ts</span><br><span class="line">|  |    ├─migrations</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>异步队列放在jobs下</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">├─src</span><br><span class="line">|  ├─jobs</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置放在config下</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">├─src</span><br><span class="line">|  ├─config</span><br><span class="line">|  |   ├─database.config.ts</span><br><span class="line">|  |   └redis.config.ts</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>权限的相关模型放在了authentication目录下</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">├─src</span><br><span class="line">|  ├─authentication</span><br><span class="line">|  |       ├─auth.controller.ts</span><br><span class="line">|  |       ├─auth.module.ts</span><br><span class="line">|  |       ├─auth.service.ts</span><br><span class="line">|  |       ├─authenticated.guard.ts</span><br><span class="line">|  |       ├─local-auth.guard.ts</span><br><span class="line">|  |       ├─local.strategy.ts</span><br><span class="line">|  |       ├─session.serializer.ts</span><br><span class="line">|  |       ├─wx-auth.service.ts</span><br><span class="line">|  |       ├─interfaces</span><br><span class="line">|  |       |     └code2session.ts</span><br><span class="line">|  |       ├─dto</span><br><span class="line">|  |       |  └wx-login.dto.ts</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>项目的相关文档</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">├─docs</span><br><span class="line">|  ├─Booking Server.xmind</span><br><span class="line">|  ├─Interface Order.xmind</span><br><span class="line">|  └接口开发顺序.xmind</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ:"></a>FAQ:</h2><ol>
+<li>nestjs，是怎么识别各种文件的职责的？</li>
+</ol>
+<p>a. nestjs自己的职责文件是通过装饰器的定义和类实现，比如middleware的声明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Injectable, NestMiddleware &#125; from &#x27;@nestjs/common&#x27;;</span><br><span class="line">import &#123; Request, Response, NextFunction &#125; from &#x27;express&#x27;;</span><br><span class="line"></span><br><span class="line">@Injectable()</span><br><span class="line">export class LoggerMiddleware implements NestMiddleware &#123;</span><br><span class="line">  use(req: Request, res: Response, next: NextFunction) &#123;</span><br><span class="line">    console.log(&#x27;Request...&#x27;);</span><br><span class="line">    next();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里通过实现NestMiddleware后，通过反射，nest可以执行对应的middleware</p>
+<p>P.S. 很多职责类，其实nestjs是不区分的，比如service，它是不实现nest内置类的，所以需要在使用的地方，比如controller的constructor手动注入</p>
+<p>b. typeorm的entity则是通过配置实现的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">database: &#123;</span><br><span class="line">    type: &#x27;postgres&#x27;,</span><br><span class="line">    host: process.env.DB_HOST,</span><br><span class="line">    port: parseInt(process.env.DB_PORT, 10),</span><br><span class="line">    username: process.env.DB_USERNAME,</span><br><span class="line">    password: process.env.DB_PASSWORD,</span><br><span class="line">    database: process.env.DB_DATABASE,</span><br><span class="line">    entities: [&#x27;dist/**/*.entity.js&#x27;],</span><br><span class="line">    synchronize: true,</span><br><span class="line">    migrations: [&#x27;dist/database/migrations/*.js&#x27;],</span><br><span class="line">    logging: false,</span><br><span class="line">    cli: &#123;</span><br><span class="line">      migrationsDir: &#x27;migration&#x27;,</span><br><span class="line">    &#125;,</span><br><span class="line">    seeds: [&#x27;dist/database/seeders/**/*.seed.js&#x27;],</span><br><span class="line">    factories: [&#x27;dist/**/*.factory.js&#x27;],</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2023/04/14/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E7%9A%84AgentGPT%EF%BC%8C%E5%B9%B6%E7%AA%81%E7%A0%B4task%E6%9C%80%E5%A4%A7%E9%99%90%E5%88%B6/">Prev</a>
+                </div>
+            
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2021/03/03/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2apollo-client%E7%9A%84request-accept/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    
+    
+
+  </body>
+</html>

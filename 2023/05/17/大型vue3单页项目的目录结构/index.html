@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Gabriel B">
+
+
+    <meta name="subtitle" content="记录10年web端开发历程，以及生活的点滴">
+
+
+    <meta name="description" content="擅长前端大型项目的架构设计，以及如何长期维护一个稳定可持续的系统">
+
+
+    <meta name="keywords" content="frontend, backend, ai, live">
+
+
+
+
+<title>大型vue3单页项目的目录结构 | Gabriel website</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/menu.js"></script>
+    
+
+
+
+
+
+
+
+
+
+
+  <meta name="generator" content="Hexo 7.3.0"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            Frame.
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Home</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Archive</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/gallery/">Gallery</a>
+              </li> 
+                   
+          
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<script src="/js/menu.js"></script>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+        </div>
+        <div class="post-title">
+            
+            
+                大型vue3单页项目的目录结构
+            
+            
+        </div>
+        <span class="post-date">
+            5月 17, 2023
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <div class="h-line-primary"></div>
+              
+    </div>
+</div>
+    <div class="post-content">
+    <h1 id="大型vue3单页应用项目的目录结构介绍"><a href="#大型vue3单页应用项目的目录结构介绍" class="headerlink" title="大型vue3单页应用项目的目录结构介绍"></a>大型vue3单页应用项目的目录结构介绍</h1><p>在开发大型的Vue 3单页应用项目时，一个良好的目录结构可以帮助我们更好地组织代码和资源文件，提高开发效率。下面是一个常用的Vue 3单页应用项目的目录结构示例：</p>
+<h2 id="src"><a href="#src" class="headerlink" title="&#x2F;src"></a>&#x2F;src</h2><h3 id="assets"><a href="#assets" class="headerlink" title="&#x2F;assets"></a>&#x2F;assets</h3><p>存放静态资源文件，如图片、字体等。</p>
+<h3 id="components"><a href="#components" class="headerlink" title="&#x2F;components"></a>&#x2F;components</h3><p>存放全局组件。</p>
+<h3 id="directives"><a href="#directives" class="headerlink" title="&#x2F;directives"></a>&#x2F;directives</h3><p>存放全局自定义指令文件。</p>
+<h3 id="mixins"><a href="#mixins" class="headerlink" title="&#x2F;mixins"></a>&#x2F;mixins</h3><p>存放全局混入文件。</p>
+<h3 id="plugins"><a href="#plugins" class="headerlink" title="&#x2F;plugins"></a>&#x2F;plugins</h3><p>存放Vue插件文件。</p>
+<h3 id="router"><a href="#router" class="headerlink" title="&#x2F;router"></a>&#x2F;router</h3><p>存放Vue路由文件。</p>
+<h3 id="store"><a href="#store" class="headerlink" title="&#x2F;store"></a>&#x2F;store</h3><p>存放Vuex状态管理文件。</p>
+<h3 id="utils"><a href="#utils" class="headerlink" title="&#x2F;utils"></a>&#x2F;utils</h3><p>存放工具函数文件。</p>
+<h3 id="views"><a href="#views" class="headerlink" title="&#x2F;views"></a>&#x2F;views</h3><p>存放页面组件。</p>
+<h3 id="App-vue"><a href="#App-vue" class="headerlink" title="&#x2F;App.vue"></a>&#x2F;App.vue</h3><p>根组件。</p>
+<h3 id="main-js"><a href="#main-js" class="headerlink" title="&#x2F;main.js"></a>&#x2F;main.js</h3><p>应用程序入口文件。</p>
+<h2 id="public"><a href="#public" class="headerlink" title="&#x2F;public"></a>&#x2F;public</h2><p>存放静态文件，如favicon.ico等。</p>
+<h2 id="tests"><a href="#tests" class="headerlink" title="&#x2F;tests"></a>&#x2F;tests</h2><p>存放单元测试和端到端测试文件。</p>
+<h2 id="node-modules"><a href="#node-modules" class="headerlink" title="&#x2F;node_modules"></a>&#x2F;node_modules</h2><p>存放项目依赖模块。</p>
+<h2 id="dist"><a href="#dist" class="headerlink" title="&#x2F;dist"></a>&#x2F;dist</h2><p>存放打包后的文件。</p>
+<p>以上是一个基本的目录结构示例，可以根据实际项目需求进行调整和扩展。</p>
+
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2024/08/20/%E8%99%9A%E7%8E%AF%E5%AE%98%E7%BD%91%E7%9A%84%E5%BB%BA%E8%AE%BE%E8%BF%87%E7%A8%8B/">Prev</a>
+                </div>
+            
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2023/04/14/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E7%9A%84AgentGPT%EF%BC%8C%E5%B9%B6%E7%AA%81%E7%A0%B4task%E6%9C%80%E5%A4%A7%E9%99%90%E5%88%B6/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    
+    
+
+  </body>
+</html>
