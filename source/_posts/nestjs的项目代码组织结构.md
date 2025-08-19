@@ -2,6 +2,8 @@
 title: nestjs的项目代码组织结构
 date: 2021-03-23 16:58:23
 tags:
+categories: 
+  - 后端
 ---
 
 通过nest命令，可以很容易开始一个nest项目，可以查看文档：()[https://docs.nestjs.com/#installation],这里默认大家已经初始化好了项目，

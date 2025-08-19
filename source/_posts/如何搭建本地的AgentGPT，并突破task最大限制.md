@@ -1,7 +1,8 @@
 ---
 title: 如何搭建本地的AgentGPT，并突破task最大限制
 date: 2023-04-14 11:56:51
-tags:
+categories: 
+  - AI
 ---
 
 如果希望了解AgentGPT是什么？可以看其他同学的文章

@@ -1,7 +1,8 @@
 ---
 title: 如何替换apollo-client的request-accept
 date: 2021-03-3 17:03:28
-tags:
+categories: 
+  - 前端
 ---
 
 当服务端依赖accept的配置，返回不同信息时，我们需要在client端修改accept。
