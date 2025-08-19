@@ -103,5 +103,5 @@ theme: frame
 deploy:
   type: git
   repo: https://github.com/guiqide/guiqide.github.io.git
-  branch: main
+  branch: github-pages
   message: 'deploy'
