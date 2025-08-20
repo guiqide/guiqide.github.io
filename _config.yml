@@ -131,7 +131,7 @@ theme_config:
   # profile
   profile:
     title: 
-    body: 沉淀的最好时机是10年前，其次是现在
+    body: 沉淀的最好时机是10年前，其次是现在。
     image: https://images-service-1251417320.cos.ap-guangzhou.myqcloud.com/images/202508191506225.png
 
     links:
