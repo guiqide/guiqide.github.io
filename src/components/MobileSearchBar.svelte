@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { OverlayScrollbars } from "overlayscrollbars";
   import Icon from "@iconify/svelte";
+  import { OverlayScrollbars } from "overlayscrollbars";
+  import { onMount } from "svelte";
 
   import I18nKeys from "../locales/keys";
   import { i18n } from "../locales/translation";

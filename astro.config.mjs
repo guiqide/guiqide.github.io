@@ -1,24 +1,24 @@
 import { defineConfig } from "astro/config";
 
-import icon from "astro-icon";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
 import svelte from "@astrojs/svelte";
+import tailwind from "@astrojs/tailwind";
 import swup from "@swup/astro";
+import icon from "astro-icon";
 
-import rehypeSlug from "rehype-slug";
-import rehypeKatex from "rehype-katex";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
 import remarkMath from "remark-math";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
-import YukinaConfig from "./yukina.config";
+import SiteConfig from "./global.config";
 
 import pagefind from "astro-pagefind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: YukinaConfig.site,
+  site: SiteConfig.site,
   integrations: [
     tailwind(),
     svelte(),

@@ -1,5 +1,5 @@
-import YukinaConfig from "../../yukina.config";
 import CryptoJS from "crypto-js";
+import SiteConfig from "../../global.config";
 
 /**
  * Converts a given slug to a hashed slug or returns the raw slug based on the configuration.
@@ -8,7 +8,7 @@ import CryptoJS from "crypto-js";
  * @returns The hashed slug if the configuration mode is "HASH", otherwise the raw slug.
  */
 export function IdToSlug(slug: string): string {
-  switch (YukinaConfig.slugMode) {
+  switch (SiteConfig.slugMode) {
     case "HASH": {
       const hash = CryptoJS.SHA256(slug);
       const hasedSlug = hash.toString(CryptoJS.enc.Hex).slice(0, 8);

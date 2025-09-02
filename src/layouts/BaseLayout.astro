@@ -1,9 +1,9 @@
 ---
-import YukinaConfig from "../../yukina.config";
+import SiteConfig from "../../global.config";
 import BaseHead from "../components/BaseHead.astro";
 ---
 
-<html lang={YukinaConfig.locale}>
+<html lang={SiteConfig.locale}>
   <BaseHead />
   <body class="overflow-y-hidden">
     <slot />
