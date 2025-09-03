@@ -1,20 +1,20 @@
 ---
+import "overlayscrollbars/overlayscrollbars.css";
 import "../styles/animations.css";
 import "../styles/scrollbar.css";
-import "../styles/transitions.css";
 import "../styles/searchbar.css";
-import "overlayscrollbars/overlayscrollbars.css";
+import "../styles/transitions.css";
 ---
 
 <style is:global>
   :root {
     --hue: 300;
 
-    --primary-color: oklch(70% 0.15 var(--hue));
-    --primary-color-lighten: oklch(95% 0.02 var(--hue));
-    --primary-color-hover: oklch(90% 0.025 var(--hue));
+    --primary-color: hsl(168, 37%, 33%);
+    --primary-color-lighten: hsl(167, 75%, 59%);
+    --primary-color-hover: hsl(167, 46%, 46%);
     --primary-color-transparent: oklch(70% 0.15 var(--hue) / 15%);
-    --text-color: oklch(30% 0 0);
+    --text-color: hsl(0, 0%, 11%);
     --text-color-lighten: oklch(50% 0 0);
     --card-color: oklch(100% 0 0);
     --card-color-transparent: oklch(100% 0 0 / 85%);
