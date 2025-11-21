@@ -1,7 +1,8 @@
 ---
-import Main from "../layouts/MainLayout.astro";
 import Markdown from "../components/Markdown.astro";
 import CopyRight from "../components/misc/CopyRight.astro";
+import Waline from "../components/Waline.svelte";
+import Main from "../layouts/MainLayout.astro";
 
 interface Props {
   title?: string;
@@ -16,15 +17,8 @@ interface Props {
   sourceLink?: string;
 }
 
-const {
-  title,
-  subTitle,
-  bannerImage,
-  published,
-  license,
-  author,
-  sourceLink,
-} = Astro.props;
+const { title, subTitle, bannerImage, published, license, author, sourceLink } =
+  Astro.props;
 ---
 
 <Main title={title} subTitle={subTitle} bannerImage={bannerImage}>
@@ -46,6 +40,8 @@ const {
         )
       }
     </div>
+    <!-- 评论区 -->
+    <Waline serverURL="https://waline.guiqide.top" path={Astro.url.pathname} />
   </div>
 </Main>
 

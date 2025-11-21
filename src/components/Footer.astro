@@ -184,6 +184,11 @@ const tagKeys = [...tags.keys()];
         > / <a class="link" href="/rss.xml">RSS</a>
       </p>
     </div>
+    <!-- 阅读量 -->
+    <p>
+    本文阅读量： 
+      <span class="waline-pageview-count" data-path={Astro.url.pathname}></span>
+    </p>
   </footer>
 </div>
 
