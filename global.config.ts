@@ -54,7 +54,7 @@ const SiteConfig: Configuration = {
   maxFooterTagChip: 24,
 
   banners: [
-    'https://images-service-1251417320.cos.ap-guangzhou.myqcloud.com/images/202509021605831.png'
+    'https://images-service-1251417320.cos.ap-guangzhou.myqcloud.com/images/202511211550984.png',
   ],
 
   slugMode: "HASH", // 'RAW' | 'HASH'
