@@ -18,6 +18,8 @@ const posts = defineCollection({
     sourceLink: z.string().optional(),
     licenseName: z.string().optional(),
     licenseUrl: z.string().optional(),
+    password: z.string().optional(),
+    encrypted: z.boolean().optional(),
   }),
 });
 

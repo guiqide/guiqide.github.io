@@ -1,8 +1,10 @@
 ---
-import { getCollection } from "astro:content";
-import { IdToSlug } from "../../utils/hash";
+import { getCollection, render } from "astro:content";
+import bcrypt from "bcryptjs";
+import CryptoJS from 'crypto-js';
+import PasswordProtection from "../../components/PasswordProtection.astro";
 import PostLayout from "../../layouts/PostLayout.astro";
-import { render } from "astro:content";
+import { IdToSlug } from "../../utils/hash";
 
 export async function getStaticPaths() {
   const postEntries = await getCollection("posts");
@@ -13,7 +15,27 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
+const { slug } = Astro.params;
 const { Content } = await render(entry);
+const { body } = entry;
+// 处理加密文章
+let encryptedData = null;
+const password = entry.data.password;
+if (entry.data.encrypted && password) {
+  // 生成密码哈希用于验证
+  const passwordHash = bcrypt.hashSync(password, 10);
+
+  // 使用密码加密原始Markdown内容
+  // @ts-ignore - TypeScript无法正确推断if条件内password的类型
+  const encrypted = CryptoJS.AES.encrypt(body, password).toString();
+
+  encryptedData = {
+    content: encrypted,
+    hash: passwordHash
+  };
+}
+console.log(entry)
+
 ---
 
 {
@@ -33,7 +55,22 @@ const { Content } = await render(entry);
         {entry.data.title}
       </div>
       <div data-pagefind-body>
-        <Content />
+        <!-- 加密文章的处理 -->
+        {encryptedData ? (
+            <div>
+                <PasswordProtection
+                  encryptedData={encryptedData}
+                  slug={slug}
+                  class="mb-6 rounded-xl password-container onload-animation"
+                />
+                <!-- 加密内容容器，内容将通过JavaScript动态解密显示 -->
+                <div id={`article-content-${slug}`} class="mb-6 markdown-content onload-animation hidden encrypted-content">
+                    <!-- 内容将在验证密码后动态插入 -->
+                </div>
+            </div>
+        ) : (
+          <Content />
+        )}
       </div>
     </PostLayout>
   )
@@ -58,7 +95,23 @@ const { Content } = await render(entry);
         {entry.data.title}
       </div>
       <div data-pagefind-body>
-        <Content />
+        <!-- 加密文章的处理 -->
+        {encryptedData ? (
+            <div>
+                <PasswordProtection
+                  encryptedData={encryptedData}
+                  slug={slug}
+                  class="mb-6 rounded-xl password-container onload-animation"
+                />
+                <!-- 加密内容容器，内容将通过JavaScript动态解密显示 -->
+                <div id={`article-content-${slug}`} class="mb-6 markdown-content onload-animation hidden encrypted-content">
+                    <!-- 内容将在验证密码后动态插入 -->
+                </div>
+            </div>
+        ) : (
+          <Content />
+        )}
+
       </div>
     </PostLayout>
   )
