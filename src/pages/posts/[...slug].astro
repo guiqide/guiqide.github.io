@@ -26,13 +26,31 @@ if (entry.data.encrypted && password && body) {
   // 生成密码哈希用于验证
   const passwordHash = bcrypt.hashSync(password, 10);
 
-  // 使用密码加密原始Markdown内容
-  // @ts-ignore - TypeScript无法正确推断if条件内password的类型
-  const encryptedContent = CryptoJS.AES.encrypt(body, password).toString();
+  // 生成随机 salt (16 字节 = 128 位)
+  const salt = CryptoJS.lib.WordArray.random(16);
+
+  // 使用 PBKDF2 从密码派生密钥 (256 位密钥，100000 次迭代)
+  const key = CryptoJS.PBKDF2(password, salt, {
+    keySize: 256 / 32,  // 256 位
+    iterations: 100000,
+    hasher: CryptoJS.algo.SHA256
+  });
+
+  // 生成随机 IV
+  const iv = CryptoJS.lib.WordArray.random(16);
+
+  // 使用派生密钥和 IV 加密内容
+  const encrypted = CryptoJS.AES.encrypt(body, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
 
   encryptedData = {
-    content: encryptedContent,
-    hash: passwordHash
+    content: encrypted.ciphertext.toString(CryptoJS.enc.Base64),
+    hash: passwordHash,
+    salt: salt.toString(CryptoJS.enc.Base64),
+    iv: iv.toString(CryptoJS.enc.Base64)
   };
 }
 ---
