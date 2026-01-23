@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三角洲烂活杯 - 计分板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-container">
+        <img src="https://zhiyan-ai-agent-with-1258344702.cos.ap-guangzhou.tencentcos.cn/with/5345c453-d70f-4b9a-900b-9743b1626ff2/1月23日.png" alt="背景图" class="background-image">
+        <div class="overlay"></div>
+    </div>
+
+    <div class="content-container">
+        <header class="header">
+            <h1 class="title">三角洲烂活杯 - 计分板</h1>
+            <p class="subtitle">1月25日下午开启直播</p>
+        </header>
+
+        <div class="scoreboard-container">
+            <div class="controls">
+                <button id="addPlayerBtn" class="add-btn">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    添加选手
+                </button>
+                <button id="clearAllBtn" class="clear-btn">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    清空所有
+                </button>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="scoreboard-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-col">排名</th>
+                            <th class="name-col">选手名称</th>
+                            <th class="score-col">成绩</th>
+                            <th class="action-col">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="playerList">
+                        <!-- 选手列表将通过JS动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+                <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                <p>暂无选手数据</p>
+                <p class="empty-hint">点击"添加选手"按钮开始记录</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>由 <a href="https://with.woa.com/" style="color: #8A2BE2;" target="_blank">With</a> 通过自然语言生成</p>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
